@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Collections.Specialized;
+using System.Web;
 using IranAcademiaChatBotServer.Agents.Academia.NeoLms.Models;
 using Microsoft.AspNetCore.WebUtilities;
 using NeoLms.Api.DotNet.Models;
@@ -8,8 +9,8 @@ namespace IranAcademiaChatBotServer.Agents.Academia.NeoLms;
 
 public class NeoLmsClient
 {
-    private string _host;
-    private string _key;
+    private readonly string _host;
+    private readonly string _key;
 
     public NeoLmsClient(string host, string apiKey)
     {
@@ -25,9 +26,11 @@ public class NeoLmsClient
 
     public Task<AuthenticationResponse> IsAuthenticated(string userid, string password)
     {
-        var queryParams = new List<KeyValuePair<string, string>>();
-        queryParams.Add(new KeyValuePair<string, string>("userid", userid));
-        queryParams.Add(new KeyValuePair<string, string>("password", password));
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new ("userid", userid),
+            new ("password", password)
+        };
 
         var result = Execute<AuthenticationResponse>("is_authenticated", queryParams);
         return result;
@@ -35,8 +38,10 @@ public class NeoLmsClient
 
     public Task<List<User>> GetAllUsers(int page)
     {
-        var queryParams = new List<KeyValuePair<string, string>>();
-        queryParams.Add(new KeyValuePair<string, string>("page", page.ToString()));
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new ("page", page.ToString())
+        };
 
         var result = Execute<List<User>>("get_all_users", queryParams);
         return result;
@@ -44,20 +49,31 @@ public class NeoLmsClient
 
     public Task<List<User>> GetUsersByIds(int[] ids)
     {
-        var queryParams = new List<KeyValuePair<string, string>>();
-        foreach (var id in ids)
-        {
-            queryParams.Add(new KeyValuePair<string, string>("user_ids[]", id.ToString()));
-        }
+        var queryParams = ids.Select(id => new KeyValuePair<string, string>("user_ids[]", id.ToString())).ToList();
 
         var result = Execute<List<User>>("get_users_with_ids", queryParams);
         return result;
     }
 
+    public async Task<User> GetUserByUsername(string username)
+    {
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new("userid", username),
+            new("page", "1")
+        };
+
+        var users =  await Execute<List<User>>("get_users_that_match", queryParams);
+        return users.FirstOrDefault();
+    }
+
+
     public Task<List<EducationClass>> GetAllClasses(int page)
     {
-        var queryParams = new List<KeyValuePair<string, string>>();
-        queryParams.Add(new KeyValuePair<string, string>("page", page.ToString()));
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new ("page", page.ToString())
+        };
 
         var result = Execute<List<EducationClass>>("get_all_classes", queryParams);
         return result;
@@ -65,11 +81,7 @@ public class NeoLmsClient
 
     public Task<List<EducationClass>> GetClassesByIds(int[] ids)
     {
-        var queryParams = new List<KeyValuePair<string, string>>();
-        foreach (var id in ids)
-        {
-            queryParams.Add(new KeyValuePair<string, string>("class_ids[]", id.ToString()));
-        }
+        var queryParams = ids.Select(id => new KeyValuePair<string, string>("class_ids[]", id.ToString())).ToList();
 
         var result = Execute<List<EducationClass>>("get_classes_with_ids", queryParams);
         return result;
@@ -77,58 +89,77 @@ public class NeoLmsClient
 
     public Task<List<EducationClass>> GetClassesEnrolledBy(int userId)
     {
-        var queryParams = new List<KeyValuePair<string, string>>();
-        queryParams.Add(new KeyValuePair<string, string>("user_id", userId.ToString()));
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new ("user_id", userId.ToString())
+        };
 
         return Execute<List<EducationClass>>("get_classes_enrolled_by", queryParams);
     }
 
     public Task<List<EducationClass>> GetClassesForOrganization(int organizationId, int page)
     {
-        var queryParams = new List<KeyValuePair<string, string>>();
-
-        queryParams.Add(new KeyValuePair<string, string>("organization_id", organizationId.ToString()));
-        queryParams.Add(new KeyValuePair<string, string>("page", page.ToString()));
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new ("organization_id", organizationId.ToString()),
+            new ("page", page.ToString())
+        };
 
         return Execute<List<EducationClass>>("get_classes_for_organization", queryParams);
     }
 
     public Task<List<Teacher>> GetTeachersForClass(int classId)
     {
-        var queryParams = new List<KeyValuePair<string, string>>();
-        queryParams.Add(new KeyValuePair<string, string>("class_id", classId.ToString()));
+        var queryParams = new List<KeyValuePair<string, string>> { new ("class_id", classId.ToString()) };
 
         return Execute<List<Teacher>>("get_teachers_for_class", queryParams);
     }
 
     public Task<List<Student>> GetStudentsForClass(int classId)
     {
-        var queryParams = new List<KeyValuePair<string, string>>();
-        queryParams.Add(new KeyValuePair<string, string>("class_id", classId.ToString()));
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new ("class_id", classId.ToString())
+        };
 
         return Execute<List<Student>>("get_students_for_class", queryParams);
     }
 
-    public Task<UserClassesStatus> GetUserSatus(int userId)
+    public Task<UserClassesStatus> GetUserStatus(int userId)
     {
-        var queryParams = new List<KeyValuePair<string, string>>();
-        queryParams.Add(new KeyValuePair<string, string>("user_id", userId.ToString()));
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new ("user_id", userId.ToString())
+        };
 
         return Execute<UserClassesStatus>("get_status_of_classes", queryParams);
     }
 
+    public async Task<List<Lesson>> GetLessonsForClass(int classId)
+    {
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new ("class_id", classId.ToString())
+        };
+
+        return await Execute<List<Lesson>>("get_lessons_for_class", queryParams);
+    }
+
     public Task<List<Group>> GetAllGroups(int page)
     {
-        var queryParams = new List<KeyValuePair<string, string>>();
-
-        queryParams.Add(new KeyValuePair<string, string>("page", page.ToString()));
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new ("page", page.ToString())
+        };
         return Execute<List<Group>>("get_all_groups", queryParams);
     }
 
     public Task<List<Group>> GetGroupsWithMember(int userId)
     {
-        var queryParams = new List<KeyValuePair<string, string>>();
-        queryParams.Add(new KeyValuePair<string, string>("user_id", userId.ToString()));
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new ("user_id", userId.ToString())
+        };
 
         return Execute<List<Group>>("get_groups_with_member", queryParams);
     }
@@ -149,6 +180,11 @@ public class NeoLmsClient
     {
         string rawResponse = await this.Get(path, queryParams);
         return JsonConvert.DeserializeObject<T>(rawResponse);
+    }
+
+    private async Task<string> ExecuteJson(string path, List<KeyValuePair<string, string>> queryParams = null)
+    {
+        return await Get(path, queryParams);
     }
 
     private async Task<string> Get(string path, List<KeyValuePair<string, string>> queryParams)

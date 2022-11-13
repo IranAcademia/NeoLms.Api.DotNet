@@ -74,10 +74,10 @@ namespace NeoLms.Api.DotNet.Models
         public string Picture { get; set; }
 
         [JsonProperty("start_at")]
-        public string StartAt { get; set; }
+        public DateTime StartAt { get; set; }
 
         [JsonProperty("finish_at")]
-        public string FinishAt { get; set; }
+        public DateTime FinishAt { get; set; }
 
         [JsonProperty("categories")]
         public List<Category> Categories { get; set; }
@@ -95,9 +95,9 @@ namespace NeoLms.Api.DotNet.Models
         public string Subject { get; set; }
 
         [JsonProperty("start")]
-        public string Start { get; set; }
+        public DateTime Start { get; set; }
 
         [JsonProperty("finish")]
-        public string Finish { get; set; }
+        public DateTime Finish { get; set; }
     }
 }
