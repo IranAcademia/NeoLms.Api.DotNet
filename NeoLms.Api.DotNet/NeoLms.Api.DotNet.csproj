@@ -5,7 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<Version>0.1.6</Version>
+		<Version>0.1.7</Version>
 		<Authors>Mehdi Mohseni</Authors>
 		<Company>Iran Academia</Company>
 		<Description>.Net API for NeoLms</Description>

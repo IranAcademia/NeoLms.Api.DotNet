@@ -2,12 +2,12 @@
 
 namespace NeoLms.Api.DotNet.Models
 {
-    public class Grademap
+    public class GradeMap
     {
         [JsonProperty("grade")]
         public string Grade { get; set; }
 
         [JsonProperty("minimum_percent")]
-        public double? MinimumPercent { get; set; }
+        public string? MinimumPercent { get; set; }
     }
 }

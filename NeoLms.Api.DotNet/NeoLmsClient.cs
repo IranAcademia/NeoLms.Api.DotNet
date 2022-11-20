@@ -176,6 +176,36 @@ public class NeoLmsClient
         return Execute<ResourcesResult>("get_resources", queryParams);
     }
 
+    public Task<List<Assignment>> GetAssignmentsForClass(int classId)
+    {
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new ("class_id", classId.ToString())
+        }; 
+        
+        return Execute<List<Assignment>>("get_assignments_for_class", queryParams);
+    }
+
+    public Task<List<Grade>> GetGradesForClass(int classId)
+    {
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new ("class_id", classId.ToString())
+        };
+
+        return Execute<List<Grade>>("get_grades_for_class", queryParams);
+    }
+
+    public Task<List<UserGrade>> GetGradesForUser(int useId)
+    {
+        var queryParams = new List<KeyValuePair<string, string>>
+        {
+            new ("user_id", useId.ToString())
+        };
+
+        return Execute<List<UserGrade>>("get_grades_for_user", queryParams);
+    }
+
     private async Task<T> Execute<T>(string path, List<KeyValuePair<string, string>> queryParams = null)
     {
         string rawResponse = await this.Get(path, queryParams);

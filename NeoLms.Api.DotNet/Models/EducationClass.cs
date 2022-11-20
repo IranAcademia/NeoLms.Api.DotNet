@@ -44,7 +44,7 @@ namespace NeoLms.Api.DotNet.Models
         public string CatalogCategory { get; set; }
 
         [JsonProperty("grademap")]
-        public List<Grademap> Grademap { get; set; }
+        public List<GradeMap> Grademap { get; set; }
 
         [JsonProperty("grading_periods")]
         public List<GradingPeriod> GradingPeriods { get; set; }

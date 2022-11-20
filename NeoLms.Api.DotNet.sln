@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeoLms.Api.DotNet", "NeoLms.Api.DotNet\NeoLms.Api.DotNet.csproj", "{244D58E1-7C76-4A23-94F7-A2E883D02925}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeoLms.Api.DotNet.Sample", "NeoLms.Api.DotNet.Sample\NeoLms.Api.DotNet.Sample.csproj", "{A354DF9C-86ED-4F06-A761-6CE3700DC455}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{244D58E1-7C76-4A23-94F7-A2E883D02925}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{244D58E1-7C76-4A23-94F7-A2E883D02925}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{244D58E1-7C76-4A23-94F7-A2E883D02925}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A354DF9C-86ED-4F06-A761-6CE3700DC455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A354DF9C-86ED-4F06-A761-6CE3700DC455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A354DF9C-86ED-4F06-A761-6CE3700DC455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A354DF9C-86ED-4F06-A761-6CE3700DC455}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
